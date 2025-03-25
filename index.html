@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Seller Central</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amazon: {
+              blue: '#232f3e',
+              navy: '#374a5e',
+              button: '#37475a',
+              link: '#007eb9',
+              orange: '#ff9900',
+              teal: '#097e8c'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: "Amazon Ember", Arial, sans-serif;
+    }
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #68D391;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #68D391;
+    }
+    .modal {
+      transition: opacity 0.25s ease;
+    }
+    body.modal-active {
+      overflow-x: hidden;
+      overflow-y: visible !important;
+    }
+    .approach-box {
+      display: inline-block;
+      padding: 2px 8px;
+      border: 2px solid #68D391;
+      border-radius: 4px;
+      background-color: #f0fdf4;
+      color: #166534;
+      font-weight: 500;
+    }
+    .approach-text {
+      color: #374151;
+    }
+  </style>
+</head>
+<body class="bg-white">
+  <!-- Top Navigation Bar -->
+  <header class="flex items-center bg-amazon-blue text-white p-2">
+    <button class="text-white p-1">
+      <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="flex items-center ml-2">
+      <div class="text-amazon-orange font-bold">amazon</div>
+      <div class="text-white text-sm ml-1">seller central</div>
+      <div class="text-white text-xs ml-1">India</div>
+    </div>
+    
+    <div class="flex items-center mx-4 bg-white rounded-sm px-2 py-1 flex-1">
+      <div class="text-amazon-blue text-sm mr-2 border-r border-gray-300 pr-2">Seller_5 | India</div>
+      <input 
+        type="text" 
+        placeholder="Search" 
+        class="flex-1 text-amazon-blue text-sm border-none outline-none"
+      />
+      <button class="text-amazon-blue">
+        <i class="fas fa-search text-sm"></i>
+      </button>
+    </div>
+    
+    <div class="flex items-center gap-4">
+      <i class="fas fa-envelope"></i>
+      <i class="fas fa-cog"></i>
+      <div class="flex items-center">
+        <span class="mr-1">EN</span>
+        <i class="fas fa-chevron-down text-xs"></i>
+      </div>
+      <div class="text-sm">Help</div>
+    </div>
+  </header>
+  
+  <!-- Secondary Navigation -->
+  <div class="flex items-center bg-amazon-navy text-white px-4 py-2">
+    <div class="flex items-center">
+      <div class="mr-8 flex items-center">
+        <i class="fas fa-clipboard-list mr-2"></i>
+        <span>Add Products</span>
+      </div>
+    </div>
+    <div class="ml-auto">
+      <button class="border border-white text-white px-4 py-1 text-sm hover:bg-opacity-20 hover:bg-white">
+        Edit
+      </button>
+    </div>
+  </div>
+  
+  <!-- Current Approach Section -->
+  <div class="border-b p-4">
+    <div class="flex items-center">
+      <div class="text-xl font-bold mr-4">Current Approach:</div>
+      <div class="text-xl font-bold mr-4" id="current-approach">
+        <span class="approach-box">Net Proceeds</span>
+      </div>
+      
+      <!-- Toggle Switch -->
+      <div class="relative inline-block w-20 mr-4 align-middle select-none">
+        <input type="checkbox" id="approach-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+        <label for="approach-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+        
+      </div>
+      
+      <button id="update-btn" class="ml-4 bg-amazon-button hover:bg-opacity-90 text-white px-4 py-2 text-sm">
+        Update pricing preference
+      </button>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="p-4 border-b">
+    <h1 class="text-2xl font-bold mb-2">Manage your earnings</h1>
+    <p class="mb-4 text-sm">Manage your earnings across the marketplace from a single place.</p>
+    
+    <div class="flex items-center mb-6">
+      <a href="#" class="text-amazon-link hover:underline text-sm mr-4">View product tour</a>
+      <a href="#" class="text-amazon-link hover:underline text-sm">Provide feedback</a>
+    </div>
+    
+    <!-- Search and Filters -->
+    <div class="flex flex-wrap gap-4 mb-4">
+      <div>
+        <div class="text-sm mb-1">Search</div>
+        <div class="flex">
+          <select class="border border-gray-300 rounded-l text-sm px-2 py-1.5 w-32 bg-white">
+            <option>All</option>
+            <option>Title</option>
+            <option>ASIN</option>
+          </select>
+          <input 
+            type="text" 
+            placeholder="Search SKU, Title/Keyword, FNSKU, ASIN, UPC/EAN" 
+            class="border-t border-b border-gray-300 px-3 py-1.5 w-80 text-sm"
+          />
+          <button class="border border-gray-300 rounded-r px-2 py-1.5 bg-white">
+            <i class="fas fa-search text-sm"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="flex items-end gap-4">
+        <div class="flex items-center gap-2">
+          <div class="relative inline-block w-10 align-middle select-none">
+            <input type="checkbox" id="favorites-toggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+            <label for="favorites-toggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
+          </div>
+          <span class="text-sm">Show only Favorites</span>
+        </div>
+        
+        <div>
+          <div class="text-sm mb-1">Listing status</div>
+          <select class="border border-gray-300 rounded text-sm px-2 py-1.5 w-40 bg-white">
+            <option>Active</option>
+            <option>Inactive</option>
+            <option>All</option>
+          </select>
+        </div>
+        
+        <div>
+          <div class="text-sm mb-1">Fulfilled by</div>
+          <select class="border border-gray-300 rounded text-sm px-2 py-1.5 w-40 bg-white">
+            <option>All</option>
+            <option>Amazon</option>
+            <option>Merchant</option>
+          </select>
+        </div>
+        
+        <button class="border border-gray-300 rounded text-sm px-3 py-1.5 bg-white flex items-center">
+          <i class="fas fa-filter mr-2 text-xs"></i>
+          All filters
+        </button>
+        
+        <button class="border border-gray-300 rounded text-sm px-3 py-1.5 bg-white flex items-center">
+          <i class="fas fa-sliders-h mr-2 text-xs"></i>
+          Preferences
+        </button>
+      </div>
+    </div>
+    
+    <!-- Results Count and Sort -->
+    <div class="flex items-center mb-4 text-sm">
+      <div>1 - 6 of 6</div>
+      <div class="ml-4 flex items-center">
+        <span class="mr-2">Sort by:</span>
+        <select class="border border-gray-300 rounded text-sm px-2 py-1.5 w-64 bg-white">
+          <option>Units sold: Highest on top</option>
+          <option>Price: Highest on top</option>
+          <option>Title: A to Z</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Product Table -->
+    <div class="border border-gray-300 rounded-sm">
+      <!-- Table Header -->
+      <div class="grid grid-cols-[40px_180px_1fr_1fr_1fr_1fr] border-b bg-gray-50">
+        <div class="p-3 border-r border-gray-300"></div>
+        <div class="p-3 border-r border-gray-300 font-medium text-sm">
+          Listing Status<br />
+          Next Step
+        </div>
+        <div class="p-3 border-r border-gray-300 font-medium text-sm">
+          Product Details<br />
+          Image, Title, ASIN and SKU
+        </div>
+        <div class="p-3 border-r border-gray-300 font-medium text-sm">
+          Net Proceeds<br />
+          Per unit sold
+        </div>
+        <div class="p-3 border-r border-gray-300 font-medium text-sm">
+          Estimated Fee and taxes<br />
+          Per unit sold
+        </div>
+        <div class="p-3 font-medium text-sm">
+          Price<br />
+          Pricing Details
+        </div>
+      </div>
+      
+      <!-- Table Row -->
+      <div class="grid grid-cols-[40px_180px_1fr_1fr_1fr_1fr] border-b">
+        <div class="p-3 border-r border-gray-300 flex items-center justify-center">
+          <input type="checkbox" class="h-4 w-4">
+        </div>
+        <div class="p-3 border-r border-gray-300">
+          <div class="font-medium">Active</div>
+          <div class="text-sm text-gray-600">June 1, 2024</div>
+        </div>
+        <div class="p-3 border-r border-gray-300">
+          <div class="flex gap-3">
+            <div class="w-16 h-16 bg-gray-100 flex-shrink-0 relative flex items-center justify-center">
+              <img src="pic1.jpg" alt="Figaro Olive Oil" class="max-h-full max-w-full object-contain">
+            </div>
+            <div>
+              <div class="text-amazon-link hover:underline cursor-pointer text-sm">
+                Figaro Extra Light Tasting Olive Oil- Ideal for All Indian Cooking- Suitable for Deep Frying- Imported from Spain- 5L
+              </div>
+              <div class="mt-2 grid grid-cols-2 gap-x-4 text-sm">
+                <div class="text-gray-600">ASIN</div>
+                <div>B0BQN41MN2</div>
+                <div class="text-gray-600">SKU</div>
+                <div>B0BQN41MN2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-3 border-r border-gray-300">
+          <div class="mb-2 text-sm">Net Proceeds</div>
+          <div class="flex items-center mb-4">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div id="net-proceeds-box" class="font-medium text-lg border border-gray-300 px-2 py-1 cursor-pointer hover:border-amazon-link">5737.00</div>
+          </div>
+          <div class="text-xs text-gray-600 mb-1">Calculated based on current price</div>
+          <div class="flex items-center">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div class="font-medium calculated-price">6000.00</div>
+          </div>
+        </div>
+        <div class="p-3 border-r border-gray-300">
+          <div class="text-xs text-gray-600 mb-1">Based on seller specified net proceeds</div>
+          <div class="flex items-center mb-4">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div class="font-medium seller-specified-fees">550</div>
+          </div>
+          <div class="text-xs text-gray-600 mb-1">Based on current seller price</div>
+          <div class="flex items-center">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div class="font-medium current-price-fees">600</div>
+          </div>
+        </div>
+        <div class="p-3">
+          <div class="text-xs text-gray-600 mb-1">Price</div>
+          <div class="flex items-center mb-4">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div class="font-medium price-value">550</div>
+          </div>
+          <div class="text-xs text-gray-600 mb-1">Pricing Details</div>
+        </div>
+      </div>
+
+      <!-- New Table Row -->
+      <div class="grid grid-cols-[40px_180px_1fr_1fr_1fr_1fr] border-b">
+        <div class="p-3 border-r border-gray-300 flex items-center justify-center">
+          <input type="checkbox" class="h-4 w-4">
+        </div>
+        <div class="p-3 border-r border-gray-300">
+          <div class="font-medium">Active</div>
+          <div class="text-sm text-gray-600">June 1, 2023</div>
+        </div>
+        <div class="p-3 border-r border-gray-300">
+          <div class="flex gap-3">
+            <div class="w-16 h-16 bg-gray-100 flex-shrink-0 relative flex items-center justify-center">
+              <img src="pic2.jpg" alt="Prayer Mat" class="max-h-full max-w-full object-contain">
+            </div>
+            <div>
+              <div class="text-amazon-link hover:underline cursor-pointer text-sm">
+                Weinbux Safari Pocket Friendly Prayer Mat/Pouch Packing Prayer Mat (Pack of 1)(Multicolor)
+              </div>
+              <div class="mt-2 grid grid-cols-2 gap-x-4 text-sm">
+                <div class="text-gray-600">ASIN</div>
+                <div>B0XXXXX</div>
+                <div class="text-gray-600">SKU</div>
+                <div>B0XXXXX</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-3 border-r border-gray-300">
+          <div class="mb-2 text-sm">Net Proceeds</div>
+          <div class="flex items-center mb-4">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div id="net-proceeds-box-2" class="font-medium text-lg border border-gray-300 px-2 py-1 cursor-pointer hover:border-amazon-link">123.00</div>
+          </div>
+          <div class="text-xs text-gray-600 mb-1">Calculated based on current price</div>
+          <div class="flex items-center">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div class="font-medium calculated-price">111.00</div>
+          </div>
+        </div>
+        <div class="p-3 border-r border-gray-300">
+          <div class="text-xs text-gray-600 mb-1">Based on seller specified net proceeds</div>
+          <div class="flex items-center mb-4">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div class="font-medium seller-specified-fees">120</div>
+          </div>
+          <div class="text-xs text-gray-600 mb-1">Based on current seller price</div>
+          <div class="flex items-center">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div class="font-medium current-price-fees">130</div>
+          </div>
+        </div>
+        <div class="p-3">
+          <div class="text-xs text-gray-600 mb-1">Price</div>
+          <div class="flex items-center mb-4">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div class="font-medium price-value">385</div>
+          </div>
+          <div class="text-xs text-gray-600 mb-1">Pricing Details</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proceeds-based Pricing Modal -->
+  <div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
+    <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+    
+    <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+      <!-- Modal Header -->
+      <div class="bg-amazon-teal text-white py-4 px-6 text-xl font-bold">
+        Proceeds-based pricing
+      </div>
+      
+      <!-- Modal Content -->
+      <div class="p-6">
+        <h2 class="text-2xl font-bold mb-4">Price Calculator</h2>
+        
+        <div class="border-b pb-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="text-lg font-medium">Package dimensions <span class="text-gray-400">(for fee calculation)</span></div>
+              <div class="mt-2">L: 50cm; B: 20cm; H: 5cm; W: 0.3kg</div>
+            </div>
+            <div>
+              <button class="text-amazon-link">
+                <i class="fas fa-edit text-xl"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="py-4 border-b">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="mr-4">
+                <i class="fas fa-university text-3xl text-gray-500"></i>
+              </div>
+              <div>
+                <div class="text-lg font-medium">Net Proceeds <span class="text-gray-400">(your input goes here)</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center border border-gray-300 px-3 py-2">
+                <span class="mr-1">₹</span>
+                <input type="text" id="net-proceeds-input" value="200" class="w-20 text-right outline-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="py-4 border-b">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="mr-4">
+                <i class="fas fa-hand-holding-usd text-3xl text-gray-500"></i>
+              </div>
+              <div>
+                <div class="text-lg font-medium">Average fees <span class="text-gray-400">(auto-calculated)</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="text-lg font-medium average-fees-value">+ ₹105</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="py-4 border-b">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="mr-4">
+                <i class="fas fa-receipt text-3xl text-gray-500"></i>
+              </div>
+              <div>
+                <div class="text-lg font-medium">Total Tax <span class="text-gray-400">(auto-calculated)</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="text-lg font-medium total-tax-value">+ ₹50</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="py-4 border-b">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="mr-4">
+                <i class="fas fa-tag text-3xl text-gray-500"></i>
+              </div>
+              <div>
+                <div class="text-lg font-medium">Listing Price <span class="text-gray-400">(refreshed basis your inputs)</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="text-lg font-medium listing-price-value">₹355</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 flex justify-center">
+          <button id="apply-proceeds-btn" class="bg-amazon-teal text-white py-3 px-6 text-lg font-medium">
+            Apply ₹200 as net proceeds
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle between Net Proceeds and Price Based approaches
+    const approachToggle = document.getElementById('approach-toggle');
+    const currentApproach = document.getElementById('current-approach');
+    const updateBtn = document.getElementById('update-btn');
+    let isLocked = false;
+
+    approachToggle.addEventListener('change', function() {
+      if (!isLocked) {
+        if (this.checked) {
+          currentApproach.innerHTML = '<span class="approach-box">Net Proceeds</span>';
+        } else {
+          currentApproach.innerHTML = '<span class="approach-text">Price Based</span>';
+        }
+      }
+    });
+
+    // Lock the approach when update button is clicked
+    updateBtn.addEventListener('click', function() {
+      isLocked = true;
+      approachToggle.disabled = true;
+      updateBtn.textContent = 'Pricing preference updated';
+      
+      // Change button style to indicate locked state
+      setTimeout(() => {
+        updateBtn.textContent = 'Update pricing preference';
+        isLocked = false;
+        approachToggle.disabled = false;
+      }, 3000);
+    });
+
+    // Modal functionality
+    const modal = document.querySelector('.modal');
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const netProceedsBox = document.getElementById('net-proceeds-box');
+    const netProceedsBox2 = document.getElementById('net-proceeds-box-2');
+    const netProceedsInput = document.getElementById('net-proceeds-input');
+    const applyProceedsBtn = document.getElementById('apply-proceeds-btn');
+    
+    // Function to calculate values based on net proceeds
+    function calculateValues(netProceeds) {
+      const listingPrice = 2.1 * netProceeds;
+      const totalTax = 0.18 * listingPrice;
+      const averageFees = listingPrice - totalTax - netProceeds;
+      
+      return {
+        listingPrice: listingPrice.toFixed(2),
+        totalTax: totalTax.toFixed(2),
+        averageFees: averageFees.toFixed(2)
+      };
+    }
+    
+    // Function to update modal values
+    function updateModalValues(value) {
+      const calculations = calculateValues(parseFloat(value));
+      
+      // Update the input value
+      netProceedsInput.value = value;
+      
+      // Update the apply button text
+      applyProceedsBtn.textContent = `Apply ₹${value} as net proceeds`;
+      
+      // Update the calculated values in the modal
+      document.querySelector('.average-fees-value').textContent = `+ ₹${calculations.averageFees}`;
+      document.querySelector('.total-tax-value').textContent = `+ ₹${calculations.totalTax}`;
+      document.querySelector('.listing-price-value').textContent = `₹${calculations.listingPrice}`;
+    }
+    
+    // Function to open modal with specific net proceeds value
+    function openModalWithValue(value, element) {
+      modal.classList.remove('opacity-0');
+      modal.classList.remove('pointer-events-none');
+      document.body.classList.add('modal-active');
+      
+      // Update all values in the modal
+      updateModalValues(value);
+      
+      // Store the element being edited
+      applyProceedsBtn.dataset.targetElement = element.id;
+    }
+    
+    // Open modal when clicking on net proceeds boxes
+    netProceedsBox.addEventListener('click', function() {
+      openModalWithValue(this.textContent.trim(), this);
+    });
+    
+    netProceedsBox2.addEventListener('click', function() {
+      openModalWithValue(this.textContent.trim(), this);
+    });
+    
+    // Close modal when clicking on overlay
+    modalOverlay.addEventListener('click', function() {
+      closeModal();
+    });
+    
+    // Update values when input changes
+    netProceedsInput.addEventListener('input', function() {
+      if (this.value) {
+        updateModalValues(this.value);
+      }
+    });
+    
+    // Apply net proceeds and close modal
+    applyProceedsBtn.addEventListener('click', function() {
+      const newValue = netProceedsInput.value;
+      const targetElementId = this.dataset.targetElement;
+      const targetElement = document.getElementById(targetElementId);
+      
+      if (targetElement) {
+        targetElement.textContent = newValue;
+        
+        // Calculate new values
+        const calculations = calculateValues(parseFloat(newValue));
+        
+        // Update the row's calculated values
+        const row = targetElement.closest('.grid');
+        if (row) {
+          // Update calculated based on current price
+          row.querySelector('.calculated-price').textContent = calculations.listingPrice;
+          
+          // Update fees and taxes
+          row.querySelector('.seller-specified-fees').textContent = calculations.averageFees;
+          row.querySelector('.current-price-fees').textContent = calculations.averageFees;
+          
+          // Update price
+          row.querySelector('.price-value').textContent = calculations.listingPrice;
+        }
+      }
+      
+      closeModal();
+    });
+    
+    function closeModal() {
+      modal.classList.add('opacity-0');
+      modal.classList.add('pointer-events-none');
+      document.body.classList.remove('modal-active');
+    }
+  </script>
+</body>
+</html>
