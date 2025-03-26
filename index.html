@@ -269,33 +269,37 @@
           <div class="mb-2 text-sm">Net Proceeds</div>
           <div class="flex items-center mb-4">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
-            <div id="net-proceeds-box" class="font-medium text-lg border border-gray-300 px-2 py-1 cursor-pointer hover:border-amazon-link">5737.00</div>
+            <div id="net-proceeds-box" class="font-medium text-sm border border-gray-300 px-2 py-1 cursor-pointer hover:border-amazon-link">0</div>
           </div>
           <div class="text-xs text-gray-600 mb-1">Calculated based on current price</div>
           <div class="flex items-center">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
-            <div class="font-medium calculated-price">6000.00</div>
+            <div class="font-medium text-sm calculated-price">3673.13</div>
           </div>
         </div>
         <div class="p-3 border-r border-gray-300">
           <div class="text-xs text-gray-600 mb-1">Based on seller specified net proceeds</div>
           <div class="flex items-center mb-4">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
-            <div class="font-medium seller-specified-fees">550</div>
+            <div class="font-medium text-sm seller-specified-fees">0</div>
           </div>
           <div class="text-xs text-gray-600 mb-1">Based on current seller price</div>
           <div class="flex items-center">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
-            <div class="font-medium current-price-fees">600</div>
+            <div class="font-medium text-sm current-price-fees">1905.87</div>
           </div>
         </div>
         <div class="p-3">
-          <div class="text-xs text-gray-600 mb-1">Price</div>
+          <div class="text-xs text-gray-600 mb-1">Based on seller specified net proceeds</div>
           <div class="flex items-center mb-4">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
-            <div class="font-medium price-value">550</div>
+            <div class="font-medium text-sm price-value">0</div>
           </div>
-          <div class="text-xs text-gray-600 mb-1">Pricing Details</div>
+          <div class="text-xs text-gray-600 mb-1">Current seller price</div>
+          <div class="flex items-center">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div class="font-medium text-sm price-value">5579.00</div>
+          </div>
         </div>
       </div>
 
@@ -306,7 +310,7 @@
         </div>
         <div class="p-3 border-r border-gray-300">
           <div class="font-medium">Active</div>
-          <div class="text-sm text-gray-600">June 1, 2023</div>
+          <div class="text-sm text-gray-600">Oct 20, 2023</div>
         </div>
         <div class="p-3 border-r border-gray-300">
           <div class="flex gap-3">
@@ -319,9 +323,9 @@
               </div>
               <div class="mt-2 grid grid-cols-2 gap-x-4 text-sm">
                 <div class="text-gray-600">ASIN</div>
-                <div>B0XXXXX</div>
+                <div>B0C9X87ZDT</div>
                 <div class="text-gray-600">SKU</div>
-                <div>B0XXXXX</div>
+                <div>B0C9X87ZDT</div>
               </div>
             </div>
           </div>
@@ -330,33 +334,37 @@
           <div class="mb-2 text-sm">Net Proceeds</div>
           <div class="flex items-center mb-4">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
-            <div id="net-proceeds-box-2" class="font-medium text-lg border border-gray-300 px-2 py-1 cursor-pointer hover:border-amazon-link">123.00</div>
+            <div id="net-proceeds-box-2" class="font-medium text-sm border border-gray-300 px-2 py-1 cursor-pointer hover:border-amazon-link">0</div>
           </div>
           <div class="text-xs text-gray-600 mb-1">Calculated based on current price</div>
           <div class="flex items-center">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
-            <div class="font-medium calculated-price">111.00</div>
+            <div class="font-medium text-sm calculated-price">257.95</div>
           </div>
         </div>
         <div class="p-3 border-r border-gray-300">
           <div class="text-xs text-gray-600 mb-1">Based on seller specified net proceeds</div>
           <div class="flex items-center mb-4">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
-            <div class="font-medium seller-specified-fees">120</div>
+            <div class="font-medium text-sm seller-specified-fees">0</div>
           </div>
           <div class="text-xs text-gray-600 mb-1">Based on current seller price</div>
           <div class="flex items-center">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
-            <div class="font-medium current-price-fees">130</div>
+            <div class="font-medium text-sm current-price-fees">127.05</div>
           </div>
         </div>
         <div class="p-3">
-          <div class="text-xs text-gray-600 mb-1">Price</div>
+          <div class="text-xs text-gray-600 mb-1">Based on seller specified net proceeds</div>
           <div class="flex items-center mb-4">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
-            <div class="font-medium price-value">385</div>
+            <div class="font-medium text-sm price-value">0</div>
           </div>
-          <div class="text-xs text-gray-600 mb-1">Pricing Details</div>
+          <div class="text-xs text-gray-600 mb-1">Current seller price</div>
+          <div class="flex items-center">
+            <div class="w-16 text-right pr-2 text-sm">INR</div>
+            <div class="font-medium text-sm price-value">385.00</div>
+          </div>
         </div>
       </div>
     </div>
@@ -507,7 +515,7 @@
     
     // Function to calculate values based on net proceeds
     function calculateValues(netProceeds) {
-      const listingPrice = 2.1 * netProceeds;
+      const listingPrice = 1.5 * netProceeds;
       const totalTax = 0.18 * listingPrice;
       const averageFees = listingPrice - totalTax - netProceeds;
       
@@ -583,12 +591,8 @@
         // Update the row's calculated values
         const row = targetElement.closest('.grid');
         if (row) {
-          // Update calculated based on current price
-          row.querySelector('.calculated-price').textContent = calculations.listingPrice;
-          
-          // Update fees and taxes
-          row.querySelector('.seller-specified-fees').textContent = calculations.averageFees;
-          row.querySelector('.current-price-fees').textContent = calculations.averageFees;
+          // Update fees
+          row.querySelector('.seller-specified-fees').textContent = (parseFloat(calculations.averageFees) + parseFloat(calculations.totalTax)).toFixed(2);
           
           // Update price
           row.querySelector('.price-value').textContent = calculations.listingPrice;
