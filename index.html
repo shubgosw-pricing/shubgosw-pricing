@@ -119,12 +119,29 @@
       <div class="relative inline-block w-20 mr-4 align-middle select-none">
         <input type="checkbox" id="approach-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
         <label for="approach-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
-        
       </div>
       
       <button id="update-btn" class="ml-4 bg-amazon-button hover:bg-opacity-90 text-white px-4 py-2 text-sm">
         Update pricing preference
       </button>
+
+      <div class="ml-4 flex items-center">
+        <span class="text-sm mr-2">Fee waiver passed:</span>
+        <div class="relative inline-block ml-1 group">
+          <i class="fas fa-info-circle text-gray-400 text-xs cursor-help"></i>
+          <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block w-64 bg-white border border-gray-200 rounded shadow-lg p-2 text-xs text-gray-600 z-10">
+            This is the default fee waiver passed on to the customers. For instance, if Amazon gives you 2% fee waiver, and you update this setting to 50%, then entire selection gets a price reduction of 50%*2% = 1%.
+            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-white border-r border-b border-gray-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center border border-gray-300 px-2 py-1">
+          <input type="number" id="global-fee-waiver-input" min="1" max="100" class="w-16 text-right outline-none text-sm" value="100" />
+          <span class="text-gray-500 text-sm ml-1">%</span>
+        </div>
+        <button id="global-fee-waiver-update" class="ml-2 bg-amazon-teal text-white px-3 py-1 text-sm hover:bg-opacity-90">
+          Update
+        </button>
+      </div>
     </div>
   </div>
   
@@ -214,7 +231,7 @@
     <!-- Product Table -->
     <div class="border border-gray-300 rounded-sm">
       <!-- Table Header -->
-      <div class="grid grid-cols-[40px_180px_1fr_1fr_1fr_1fr] border-b bg-gray-50">
+      <div class="grid grid-cols-[40px_180px_1fr_1fr_1fr_1fr_1fr] border-b bg-gray-50">
         <div class="p-3 border-r border-gray-300"></div>
         <div class="p-3 border-r border-gray-300 font-medium text-sm">
           Listing Status<br />
@@ -240,14 +257,26 @@
           Estimated Fee and taxes<br />
           <span class="text-gray-500 text-xs">Per unit sold</span>
         </div>
-        <div class="p-3 font-medium text-sm">
+        <div class="p-3 border-r border-gray-300 font-medium text-sm">
           Price<br />
           <span class="text-gray-500 text-xs">Pricing Details</span>
+        </div>
+        <div class="p-3 font-medium text-sm">
+          Fee waiver passed
+          <div class="relative inline-block ml-1 group">
+            <i class="fas fa-info-circle text-gray-400 text-xs cursor-help"></i>
+            <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block w-64 bg-white border border-gray-200 rounded shadow-lg p-2 text-xs text-gray-600 z-10">
+              This is the fee waiver passed on to the customers at a product level. For instance, if Amazon gives you 2% fee waiver, and you update this setting to 50%, then the product against which the value is updated gets a price reduction of 50%*2% = 1%.
+              <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-white border-r border-b border-gray-200"></div>
+            </div>
+          </div>
+          <br />
+          <span class="text-gray-500 text-xs">Percentage</span>
         </div>
       </div>
       
       <!-- Table Row -->
-      <div class="grid grid-cols-[40px_180px_1fr_1fr_1fr_1fr] border-b">
+      <div class="grid grid-cols-[40px_180px_1fr_1fr_1fr_1fr_1fr] border-b">
         <div class="p-3 border-r border-gray-300 flex items-center justify-center">
           <input type="checkbox" class="h-4 w-4">
         </div>
@@ -309,10 +338,24 @@
             <div class="font-medium text-sm price-value">5579.00</div>
           </div>
         </div>
+        <div class="p-3 border-r border-gray-300">
+          <div class="flex items-center gap-2">
+            <div class="flex items-center border border-gray-300 px-2 py-1">
+              <input type="number" min="1" max="100" class="w-16 text-right outline-none text-sm" value="0" />
+              <span class="text-gray-500 text-sm ml-1">%</span>
+            </div>
+            <button class="bg-amazon-teal text-white px-3 py-1 text-sm hover:bg-opacity-90 fee-waiver-update">
+              Update
+            </button>
+          </div>
+          <div class="mt-2 text-xs text-gray-600">
+            Current fee waiver passed: <span class="font-medium current-fee-waiver">100%</span>
+          </div>
+        </div>
       </div>
 
       <!-- New Table Row -->
-      <div class="grid grid-cols-[40px_180px_1fr_1fr_1fr_1fr] border-b">
+      <div class="grid grid-cols-[40px_180px_1fr_1fr_1fr_1fr_1fr] border-b">
         <div class="p-3 border-r border-gray-300 flex items-center justify-center">
           <input type="checkbox" class="h-4 w-4">
         </div>
@@ -372,6 +415,20 @@
           <div class="flex items-center">
             <div class="w-16 text-right pr-2 text-sm">INR</div>
             <div class="font-medium text-sm price-value">385.00</div>
+          </div>
+        </div>
+        <div class="p-3 border-r border-gray-300">
+          <div class="flex items-center gap-2">
+            <div class="flex items-center border border-gray-300 px-2 py-1">
+              <input type="number" min="1" max="100" class="w-16 text-right outline-none text-sm" value="0" />
+              <span class="text-gray-500 text-sm ml-1">%</span>
+            </div>
+            <button class="bg-amazon-teal text-white px-3 py-1 text-sm hover:bg-opacity-90 fee-waiver-update">
+              Update
+            </button>
+          </div>
+          <div class="mt-2 text-xs text-gray-600">
+            Current fee waiver passed: <span class="font-medium current-fee-waiver">100%</span>
           </div>
         </div>
       </div>
@@ -615,6 +672,36 @@
       modal.classList.add('pointer-events-none');
       document.body.classList.remove('modal-active');
     }
+
+    // Fee waiver update functionality
+    document.querySelectorAll('.fee-waiver-update').forEach(button => {
+      button.addEventListener('click', function() {
+        const input = this.previousElementSibling.querySelector('input');
+        const currentValueDisplay = this.closest('.p-3').querySelector('.current-fee-waiver');
+        const newValue = input.value;
+        
+        if (newValue >= 1 && newValue <= 100) {
+          currentValueDisplay.textContent = `${newValue}%`;
+        }
+      });
+    });
+
+    // Global fee waiver update functionality
+    document.getElementById('global-fee-waiver-update').addEventListener('click', function() {
+      const input = document.getElementById('global-fee-waiver-input');
+      const newValue = input.value;
+      
+      if (newValue >= 1 && newValue <= 100) {
+        // Update all fee waiver inputs and displays in the table
+        document.querySelectorAll('.fee-waiver-update').forEach(button => {
+          const input = button.previousElementSibling.querySelector('input');
+          const currentValueDisplay = button.closest('.p-3').querySelector('.current-fee-waiver');
+          
+          input.value = newValue;
+          currentValueDisplay.textContent = `${newValue}%`;
+        });
+      }
+    });
   </script>
 </body>
 </html>
